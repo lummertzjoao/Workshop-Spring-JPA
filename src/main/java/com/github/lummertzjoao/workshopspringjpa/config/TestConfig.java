@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.github.lummertzjoao.workshopspringjpa.entities.Category;
 import com.github.lummertzjoao.workshopspringjpa.entities.Order;
+import com.github.lummertzjoao.workshopspringjpa.entities.OrderItem;
 import com.github.lummertzjoao.workshopspringjpa.entities.Product;
 import com.github.lummertzjoao.workshopspringjpa.entities.User;
 import com.github.lummertzjoao.workshopspringjpa.entities.enums.OrderStatus;
 import com.github.lummertzjoao.workshopspringjpa.repositories.CategoryRepository;
+import com.github.lummertzjoao.workshopspringjpa.repositories.OrderItemRepository;
 import com.github.lummertzjoao.workshopspringjpa.repositories.OrderRepository;
 import com.github.lummertzjoao.workshopspringjpa.repositories.ProductRepository;
 import com.github.lummertzjoao.workshopspringjpa.repositories.UserRepository;
@@ -30,6 +32,8 @@ public class TestConfig implements CommandLineRunner {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private ProductRepository productRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -46,6 +50,10 @@ public class TestConfig implements CommandLineRunner {
 		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.PAID, u1);
 		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2);
 		Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMENT, u1);
+		OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+		OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 		userRepository.saveAll(Arrays.asList(u1, u2));
@@ -57,5 +65,6 @@ public class TestConfig implements CommandLineRunner {
 		p4.getCategories().add(cat3);
 		p5.getCategories().add(cat2);
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	}
 }
